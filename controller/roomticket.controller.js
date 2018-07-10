@@ -287,7 +287,6 @@ function TestRequest(roomTicketReq, request) {
     return true;
   } else return false;
 }
-a;
 
 function TestTimeRecent(end, start) {
   if (end.getTime() < start.getTime()) {
