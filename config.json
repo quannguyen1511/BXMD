@@ -8,5 +8,6 @@
     "host": "@ds227821.mlab.com:27821",
     "database": "nha_xe"
   },
-  "rentDefault": 100
+  "rentDefault": 100,
+  "dateNumberRoom": 10
 }
