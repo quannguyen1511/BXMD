@@ -100,12 +100,12 @@ function deleteRent(req, res, next) {
   var request = {
     col: req.params.col,
     row: req.params.row,
-    companyName: " ",
+    companyName: null,
     status: 0,
-    rentedDate: new Date(),
-    expirationDate: new Date(),
-    renter: " ",
-    carNumber: " "
+    rentedDate: null,
+    expirationDate: null,
+    renter: null,
+    carNumber: null
   };
   indexController
     .updateIndex(request)
