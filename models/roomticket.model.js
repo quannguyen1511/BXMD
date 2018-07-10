@@ -3,38 +3,39 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema; //dinh nghia 1 kieu cau truc cho mongo
 
 var ticketSchema = new Schema({
-  // col: {
-  //   type: Number,
-  //   required: true
-  // },
-  // row: {
-  //   type: Number,
-  //   required: true
-  // },
-  numberroom:{
+  numberroom: {
     type: Number,
     required: true
   },
-  status: {//Co hoat dong hay khong
+  status: {
+    //Co hoat dong hay khong
     type: Boolean,
     required: true,
-    default:true
+    default: true
+  },
+  companyName: {
+    type: String
   },
   employeeName: {
-    type: String,
-    required: true
+    type: String
   },
-  route:{// tuyến đường
-    type: String,
-    required: true
+  route: {
+    // tuyến đường
+    type: String
   },
-  timeStartService:{ // làm việc từ mấy giờ
-    type :Number,
-    required: true
+  timeStartService: {
+    // làm việc từ mấy giờ
+    type: Number
   },
-  timeEndService:{ // tới mấy h
-    type :Number,
-    required: true
+  timeEndService: {
+    // tới mấy h
+    type: Number
+  },
+  timeStartRecent: {
+    type: Date
+  },
+  timeEndRecent: {
+    type: Date
   }
 });
 
