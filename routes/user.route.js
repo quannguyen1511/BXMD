@@ -4,8 +4,8 @@ var userController = require("./../controller/user.controller");
 
 module.exports = () => {
   router.get("/", getAllUser);
-  router.post("/create", createUser);
-  router.post("/", loginUser);
+  router.post("/", createUser);
+  router.post("/login", loginUser);
   router.put("/password", updatePassword);
   router.put("/info", updateInfo);
   return router;
