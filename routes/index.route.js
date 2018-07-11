@@ -5,9 +5,9 @@ var indexController = require("./../controller/index.controller");
 module.exports = () => {
   router.get("/", getAllIndex);
   router.get("/:col/:row", getIndex);
-  router.post("/startrent/:col/:row", startRent);
-  router.put("/update/:col/:row", updateRent);
-  router.delete("/delete/:col/:row", deleteRent);
+  router.post("/:col/:row", startRent);
+  router.put("/:col/:row", updateRent);
+  router.delete("/:col/:row", deleteRent);
   return router;
 };
 
