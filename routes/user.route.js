@@ -12,7 +12,8 @@ module.exports = () => {
 };
 
 var filterEmail = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-var filterPass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*\.\-\_])(?=.{6,})/;
+// var filterPass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*\.\-\_])(?=.{6,})/;
+var filterPass = /^([a-zA-Z0-9_\.\-]{6,})/;
 
 function getAllUser(req, res, next) {
   userController
@@ -31,9 +32,7 @@ function createUser(req, res, next) {
     password: req.body.password,
     name: req.body.name
   };
-  if (!request.name) {
-    res.status(400).send({ message: message.ERROR_MESSAGE.USER.EMPTY_NAME });
-  } else if (!filterEmail.test(request.email)) {
+  if (!filterEmail.test(request.email)) {
     res
       .status(400)
       .send({ message: message.ERROR_MESSAGE.USER.NOT_STANDARD.EMAIL });
