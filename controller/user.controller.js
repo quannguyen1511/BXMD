@@ -78,7 +78,10 @@ function loginUser(request) {
               message: message.ERROR_MESSAGE.USER.WRONG_PASS
             });
           } else {
-            resolve({userModel: userModel,message:message.SUCCESS_MESSAGE.USER.LOGIN});
+            resolve({
+              userModel: userModel,
+              message: message.SUCCESS_MESSAGE.USER.LOGIN
+            });
           }
         }
       }
@@ -94,7 +97,7 @@ function updateUser_PASS(request) {
       }
       if (!userModel) {
         reject({
-          statusCode: 400,
+          statusCode: 404,
           message: message.ERROR_MESSAGE.USER.NOT_FOUND
         });
       } else {

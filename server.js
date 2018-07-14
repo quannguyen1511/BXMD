@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(allowCrossDomain);
 
-app.use("/index", require("./routes/index.route")());
+app.use("/parkinglot", require("./routes/index.route")());
 app.use("/roomticket", require("./routes/roomticket.route")());
 app.use("/user", require("./routes/user.route")());
 
