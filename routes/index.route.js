@@ -3,15 +3,16 @@ var message = require("./../utils/message");
 var indexController = require("./../controller/index.controller");
 
 module.exports = () => {
-  router.get("/", getAllIndex);
-  router.get("/:col/:row", getIndex);
+  router.get("/", getInfoIndex);
+  // router.get("/", getIndex);
   router.post("/:col/:row", startRent);
   router.put("/:col/:row", updateRent);
   router.delete("/:col/:row", deleteRent);
   return router;
 };
 
-function getAllIndex(req, res, next) {
+function getInfoIndex(req, res, next) {
+  if(!req.query.col|| !req.query.row){
   indexController
     .getAllIndex()
     .then(function(response) {
@@ -19,24 +20,39 @@ function getAllIndex(req, res, next) {
     })
     .catch(function(err) {
       next(err);
-    });
+    });}
+    else{
+      var request = {
+            col: req.query.col,
+            row: req.query.row
+          };
+        
+          indexController
+            .getIndex(request)
+            .then(function(response) {
+              res.send(response);
+            })
+            .catch(function(err) {
+              next(err);
+            });
+    }
 }
 
-function getIndex(req, res, next) {
-  var request = {
-    col: req.params.col,
-    row: req.params.row
-  };
+// function getIndex(req, res, next) {
+//   var request = {
+//     col: req.query.col,
+//     row: req.query.row
+//   };
 
-  indexController
-    .getIndex(request)
-    .then(function(response) {
-      res.send(response);
-    })
-    .catch(function(err) {
-      next(err);
-    });
-}
+//   indexController
+//     .getIndex(request)
+//     .then(function(response) {
+//       res.send(response);
+//     })
+//     .catch(function(err) {
+//       next(err);
+//     });
+// }
 
 function startRent(req, res, next) {
   var request = {
