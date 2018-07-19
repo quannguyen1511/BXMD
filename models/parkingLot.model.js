@@ -2,7 +2,7 @@ var mongoose = require("mongoose");
 
 var Schema = mongoose.Schema; //dinh nghia 1 kieu cau truc cho mongo
 
-var indexSchema = new Schema({
+var parkingLotSchema = new Schema({
   col: {
     type: Number,
     required: true
@@ -27,10 +27,13 @@ var indexSchema = new Schema({
   carNumber: {
     type: String
   },
-  companyName: {
+  companyTaxID: {
     type: String
+  },
+  location: {
+    type: Number
   }
 });
 
-var Index = mongoose.model("index", indexSchema);
-module.exports = Index;
+var parkingLot = mongoose.model("parkingLot", parkingLotSchema);
+module.exports = parkingLot;

@@ -34,11 +34,11 @@ function createUser(req, res, next) {
   };
   if (!filterEmail.test(request.email)) {
     res
-      .status(400)
+      .status(422)
       .send({ message: message.ERROR_MESSAGE.USER.NOT_STANDARD.EMAIL });
   } else if (!filterPass.test(request.password)) {
     res
-      .status(400)
+      .status(422)
       .send({ message: message.ERROR_MESSAGE.USER.NOT_STANDARD.PASS });
   } else {
     userController
