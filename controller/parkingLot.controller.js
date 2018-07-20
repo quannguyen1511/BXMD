@@ -58,9 +58,7 @@ function getParkingLot(request) {
   return new Promise((resolve, reject) => {
     parkingLot
       .findOne({
-        col: request.col,
-        row: request.row,
-        location: request.location
+        _id: request
       })
       .exec(function(err, parkingLotModel) {
         if (err) {
@@ -83,9 +81,7 @@ function createParkingLot(request) {
   return new Promise((resolve, reject) => {
     parkingLot
       .findOne({
-        col: request.col,
-        row: request.row,
-        location: request.location
+        _id: request.id
       })
       .exec((err, parkingLotModel) => {
         if (err) {
@@ -133,9 +129,7 @@ function updateParkingLot(request) {
   return new Promise((resolve, reject) => {
     parkingLot
       .findOne({
-        col: request.col,
-        row: request.row,
-        location: request.location
+        _id: request.id
       })
       .exec((err, parkingLotModel) => {
         if (err) {
@@ -159,12 +153,22 @@ function updateParkingLot(request) {
                   message: message.ERROR_MESSAGE.PARKING_LOT.CANT_USE
                 });
               } else {
-                parkingLotModel.companyTaxID = request.companyTaxID;
+                parkingLotModel.companyTaxID = request.companyTaxID
+                  ? request.companyTaxID
+                  : parkingLotModel.companyTaxID;
                 parkingLotModel.status = request.status;
-                parkingLotModel.rentedDate = request.rentedDate;
-                parkingLotModel.expirationDate = request.expirationDate;
-                parkingLotModel.renter = request.renter;
-                parkingLotModel.carNumber = request.carNumber;
+                parkingLotModel.rentedDate = request.rentedDate
+                  ? new Date(request.rentedDate)
+                  : parkingLotModel.rentedDate;
+                parkingLotModel.expirationDate = request.expirationDate
+                  ? new Date(request.expirationDate)
+                  : parkingLotModel.expirationDate;
+                parkingLotModel.renter = request.renter
+                  ? request.renter
+                  : parkingLotModel.renter;
+                parkingLotModel.carNumber = request.carNumber
+                  ? request.carNumber
+                  : parkingLotModel.carNumber;
                 parkingLotModel.save((err, response) => {
                   if (err) reject(err);
                   else {
