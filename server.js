@@ -5,7 +5,7 @@ var bodyParser = require("body-parser"); //khai bao thu vien body-parser
 //khai bao thu muc, duong dan, ham su dung
 var config = require("./config");
 var errorHandler = require("./middlewares/error-handler"); //khai bao su dung error-handler
-
+var jsonwebtoken = require("jsonwebtoken");
 var app = express();
 
 var allowCrossDomain = function(req, res, next) {
@@ -19,8 +19,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(allowCrossDomain);
 
+app.use("/company", require("./routes/company.route")());
 app.use("/parkingLots", require("./routes/parkingLot.route")());
-app.use("/roomticket", require("./routes/roomticket.route")());
+app.use("/ticketOffice", require("./routes/ticketOffice.route")());
 app.use("/user", require("./routes/user.route")());
 
 app.use(errorHandler.errorHandler());
