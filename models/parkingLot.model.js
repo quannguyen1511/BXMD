@@ -32,22 +32,6 @@ var parkingLotSchema = new Schema({
   },
   location: {
     type: Number
-  },
-  createdBy: {
-    type: String,
-    required: true
-  },
-  createdTime: {
-    type: String,
-    required: true
-  },
-  updatedBy: {
-    type: String,
-    required: true
-  },
-  updatedTime: {
-    type: String,
-    required: true
   }
 });
 

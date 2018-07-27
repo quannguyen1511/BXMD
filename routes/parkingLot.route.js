@@ -1,16 +1,14 @@
 var router = require("express").Router();
 var message = require("./../utils/message");
 var parkingLotController = require("./../controller/parkingLot.controller");
-var config = require("./../config");
-var auth = require("./../middlewares/jwt-parser");
 
 module.exports = () => {
-  router.get("/", auth.parser(config.ROLE.ALL), getAllParkingLot);
-  // router.post("/create/:location",auth.parser(config.ROLE.ADMIN),createDocument);
-  router.get("/:id", auth.parser(config.ROLE.ALL), getOneParkingLot);
-  router.put("/:id", auth.parser(config.ROLE.ALL), startRent);
-  router.patch("/:id", auth.parser(config.ROLE.ALL), updateRent);
-  router.delete("/:id", auth.parser(config.ROLE.ALL), deleteRent);
+  router.get("/", getAllParkingLot);
+  router.get("/create/:location", createDocument);
+  router.get("/:id", getOneParkingLot);
+  router.put("/:id", startRent);
+  router.patch("/:id", updateRent);
+  router.delete("/:id", deleteRent);
   return router;
 };
 
@@ -36,11 +34,10 @@ function getAllParkingLot(req, res, next) {
   }
 }
 
-// function createDocument(req, res, next) {
-//   var request = { location: req.params.location, user: req.user };
-//   parkingLotController.createDocument(request);
-//   res.send("ok");
-// }
+function createDocument(req, res, next) {
+  parkingLotController.createDocument(req.params.location);
+  res.send("ok");
+}
 
 function getOneParkingLot(req, res, next) {
   parkingLotController
@@ -61,28 +58,27 @@ function startRent(req, res, next) {
     rentedDate: new Date(req.body.rentedDate),
     expirationDate: new Date(req.body.expirationDate),
     renter: req.body.renter,
-    carNumber: req.body.carNumber,
-    user: req.user
+    carNumber: req.body.carNumber
   };
   if (!request.expirationDate) {
     res.status(400).send({
-      message: message.ERROR_MESSAGE.PARKING_LOT.EMPTY_EXPIRATION_DATE
+      message: message.ERROR_MESSAGE.parkingLot.EMPTY_EXPIRATION_DATE
     });
   } else {
-    if (!request.renter && !request.companyTaxID) {
+    if (!request.renter) {
       res
         .status(400)
-        .send({ message: message.ERROR_MESSAGE.PARKING_LOT.EMPTY_RENTER });
+        .send({ message: message.ERROR_MESSAGE.parkingLot.EMPTY_RENTER });
     } else {
       if (!request.carNumber) {
-        res.status(400).send({
-          message: message.ERROR_MESSAGE.PARKING_LOT.EMPTY_CAR_NUMBER
-        });
+        res
+          .status(400)
+          .send({ message: message.ERROR_MESSAGE.parkingLot.EMPTY_CAR_NUMBER });
       } else {
         if (request.expirationDate <= request.rentedDate) {
           res
             .status(400)
-            .send({ message: message.ERROR_MESSAGE.PARKING_LOT.NOT_STANDARD });
+            .send({ message: message.ERROR_MESSAGE.parkingLot.NOT_STANDARD });
         } else {
           parkingLotController
             .createParkingLot(request)
@@ -102,9 +98,7 @@ function updateRent(req, res, next) {
     rentedDate: req.body.rentedDate,
     expirationDate: req.body.expirationDate,
     renter: req.body.renter,
-    carNumber: req.body.carNumber,
-    userUpdate: req.user.name,
-    user: req.user
+    carNumber: req.body.carNumber
   };
   parkingLotController
     .updateParkingLot(request)
@@ -115,11 +109,15 @@ function updateRent(req, res, next) {
 function deleteRent(req, res, next) {
   var request = {
     id: req.params.id,
+    companyTaxID: null,
     status: 0,
-    user: req.user
+    rentedDate: null,
+    expirationDate: null,
+    renter: null,
+    carNumber: null
   };
   parkingLotController
-    .deleteParkingLot(request)
+    .updateParkingLot(request)
     .then(response => res.send(response))
     .catch(err => next(err));
 }

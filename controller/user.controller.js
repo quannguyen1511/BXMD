@@ -7,8 +7,7 @@ module.exports = {
   createUser: createUser,
   updateUser_PASS: updateUser_PASS,
   loginUser: loginUser,
-  updateUser_INFO: updateUser_INFO,
-  getUserByEmail: getUserByEmail
+  updateUser_INFO: updateUser_INFO
 };
 
 function getAllUser() {
@@ -18,25 +17,6 @@ function getAllUser() {
         reject(err);
       } else {
         resolve(users);
-      }
-    });
-  });
-}
-
-function getUserByEmail(request) {
-  return new Promise((resolve, reject) => {
-    User.findOne({ email: request }).exec((err, userModel) => {
-      if (err) {
-        reject(err);
-      } else {
-        if (!userModel) {
-          reject({
-            statusCode: 404,
-            message: message.ERROR_MESSAGE.USER.NOT_FOUND
-          });
-        } else {
-          resolve(userModel);
-        }
       }
     });
   });
@@ -56,9 +36,7 @@ function createUser(request) {
             email: request.email,
             name: request.name,
             salt: salt,
-            password: crypto.hashWithSalt(request.password, salt),
-            sex: request.sex,
-            phone: request.phone
+            password: crypto.hashWithSalt(request.password, salt)
           });
 
           newUser.save(function(err, response) {
@@ -138,10 +116,7 @@ function updateUser_PASS(request) {
             if (err) {
               reject(err);
             } else {
-              resolve({
-                user: userModel,
-                message: message.SUCCESS_MESSAGE.USER.CHANGE.PASS
-              });
+              resolve({ message: message.SUCCESS_MESSAGE.USER.CHANGE.PASS });
             }
           });
         }
@@ -169,15 +144,12 @@ function updateUser_INFO(request) {
             message: message.ERROR_MESSAGE.USER.WRONG_PASS
           });
         } else {
-          userModel.name = request.newName || userModel.name;
+          userModel.name = request.newName;
           userModel.save(function(err, response) {
             if (err) {
               reject(err);
             } else {
-              resolve({
-                user: userModel,
-                message: message.SUCCESS_MESSAGE.USER.CHANGE.INFO
-              });
+              resolve({ message: message.SUCCESS_MESSAGE.USER.CHANGE.INFO });
             }
           });
         }

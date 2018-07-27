@@ -8,16 +8,6 @@
     "host": "@ds227821.mlab.com:27821",
     "database": "nha_xe"
   },
-  "status": 0,
-  "ROLE": {
-    "ADMIN": "Admin",
-    "USER": "User",
-    "ALL": "ALL"
-  },
   "rentDefault": 100,
-  "dateIndexOffice": 5,
-  "dataBlock": 2,
-  "numberRoutes": 3,
-  "numberRoutesWorkingDay": 2,
-  "numberDayWorkingOnWeek": 7
+  "dateNumberRoom": 10
 }
