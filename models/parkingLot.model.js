@@ -31,7 +31,7 @@ var parkingLotSchema = new Schema({
     type: String
   },
   location: {
-    type: Number
+    type: String
   }
 });
 
