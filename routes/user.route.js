@@ -1,13 +1,16 @@
 var router = require("express").Router(); //bo dinh tuyen
 var message = require("./../utils/message");
 var userController = require("./../controller/user.controller");
+var config = require("./../config");
+var auth = require("./../middlewares/jwt-parser");
+var authController = require("../controller/auth.controller");
 
 module.exports = () => {
-  router.get("/", getAllUser);
-  router.post("/", createUser);
+  router.get("/", auth.parser(config.ROLE.ADMIN), getAllUser);
+  router.post("/", auth.parser(config.ROLE.ADMIN), createUser);
   router.post("/login", loginUser);
-  router.put("/password", updatePassword);
-  router.put("/info", updateInfo);
+  router.put("/password", auth.parser(config.ROLE.USER), updatePassword);
+  router.put("/info", auth.parser(config.ROLE.USER), updateInfo);
   return router;
 };
 
@@ -30,15 +33,16 @@ function createUser(req, res, next) {
   var request = {
     email: req.body.email,
     password: req.body.password,
-    name: req.body.name
+    name: req.body.name,
+    phone: req.body.phone
   };
   if (!filterEmail.test(request.email)) {
     res
-      .status(422)
+      .status(400)
       .send({ message: message.ERROR_MESSAGE.USER.NOT_STANDARD.EMAIL });
   } else if (!filterPass.test(request.password)) {
     res
-      .status(422)
+      .status(400)
       .send({ message: message.ERROR_MESSAGE.USER.NOT_STANDARD.PASS });
   } else {
     userController
@@ -66,8 +70,8 @@ function loginUser(req, res, next) {
       .status(400)
       .send({ message: message.ERROR_MESSAGE.USER.NOT_STANDARD.EMAIL });
   } else {
-    userController
-      .loginUser(request)
+    authController
+      .validateUser(request)
       .then(response => {
         res.send(response);
       })
